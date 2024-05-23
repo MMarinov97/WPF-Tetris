@@ -69,5 +69,54 @@ namespace Tetris
             return Enumerable.Range(0, grid.GetLength(1))
                 .All(c => grid[r, c] == 0);
         }
+
+        /// <summary>
+        /// Changes all cells in a row to 0
+        /// </summary>
+        /// <param name="r">Row</param>
+        private void ClearRow(int r)
+        {
+            for (int c = 0; c < Columns; c++)
+            {
+                grid[r, c] = 0;
+            }
+        }
+
+        /// <summary>
+        /// Moves all element of a given row down
+        /// </summary>
+        /// <param name="r">Row</param>
+        /// <param name="numRows">Number of rows to be moved down</param>
+        private void MoveRowDown(int r, int numRows)
+        {
+            for(int c = 0; c < Columns; c++)
+            {
+                grid[r + numRows, c] = grid[r, c];
+                grid[r, c] = 0;
+            }
+        }
+
+        /// <summary>
+        /// Checks all rows from bottom to top, clears full rows and drops down the next ones
+        /// </summary>
+        /// <returns>Number of rows cleared</returns>
+        public int ClearFullRows() 
+        {
+            int cleared = 0;
+
+            for(int r = Rows - 1; r >= 0; r--) // Check all rows from bottom to top
+            {
+                if (IsRowFull(r)) // Check if the row is full. If it is, clear it and increase token
+                {
+                    ClearRow(r);
+                    cleared++;
+                } else if( cleared > 0 ) // Move rows down as many rows as token says
+                {
+                    MoveRowDown(r, cleared);
+                }
+            }
+
+            return cleared;
+        }
     }
 }
