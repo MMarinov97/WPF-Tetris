@@ -1,6 +1,8 @@
-﻿
-namespace Tetris
+﻿namespace Tetris.Models
 {
+    /// <summary>
+    /// This class represents the game grid that will be containing all the Tetris pieces
+    /// </summary>
     public class GameGrid
     {
         private readonly int[,] grid;
@@ -47,7 +49,7 @@ namespace Tetris
         {
             return IsInside(r, c) && grid[r, c] == 0;
         }
-        
+
         /// <summary>
         /// Checks if all cells in a row are full
         /// </summary>
@@ -58,7 +60,7 @@ namespace Tetris
             return Enumerable.Range(0, grid.GetLength(1))
                 .All(c => grid[r, c] != 0);
         }
-        
+
         /// <summary>
         /// Checks if all cells in a row are empty
         /// </summary>
@@ -89,7 +91,7 @@ namespace Tetris
         /// <param name="numRows">Number of rows to be moved down</param>
         private void MoveRowDown(int r, int numRows)
         {
-            for(int c = 0; c < Columns; c++)
+            for (int c = 0; c < Columns; c++)
             {
                 grid[r + numRows, c] = grid[r, c];
                 grid[r, c] = 0;
@@ -100,17 +102,18 @@ namespace Tetris
         /// Checks all rows from bottom to top, clears full rows and drops down the next ones
         /// </summary>
         /// <returns>Number of rows cleared</returns>
-        public int ClearFullRows() 
+        public int ClearFullRows()
         {
             int cleared = 0;
 
-            for(int r = Rows - 1; r >= 0; r--) // Check all rows from bottom to top
+            for (int r = Rows - 1; r >= 0; r--) // Check all rows from bottom to top
             {
                 if (IsRowFull(r)) // Check if the row is full. If it is, clear it and increase token
                 {
                     ClearRow(r);
                     cleared++;
-                } else if( cleared > 0 ) // Move rows down as many rows as token says
+                }
+                else if (cleared > 0) // Move rows down as many rows as token says
                 {
                     MoveRowDown(r, cleared);
                 }
